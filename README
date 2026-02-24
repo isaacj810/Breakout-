@@ -1,0 +1,65 @@
+BREAKOUT GAME
+
+Proyecto Académico – Programación Orientada a Objetos
+
+Autores: Isaac Salazar Y Pedro Morese
+
+🎓 Universidad de Oriente
+📘 Materia: Taller de Programación Orientada a Objetos
+
+Este proyecto consiste en el desarrollo de un videojuego tipo Breakout, implementado utilizando el lenguaje Python y la biblioteca Pygame, aplicando los principios de la Programación Orientada a Objetos (POO).
+
+El objetivo del juego es destruir todos los bloques del nivel utilizando una pelota que rebota en una plataforma controlada por el jugador.
+
+El proyecto fue desarrollado como parte de la asignatura Taller de Programación Orientada a Objetos, con el propósito de aplicar conceptos como:
+
+-Clases y objetos
+
+-Encapsulamiento
+
+-Modularización
+
+-Gestión de eventos
+
+-Colisiones
+
+-Manejo de estados del juego
+
+🎮 Características del Juego:
+
+✅ Menú principal interactivo
+
+✅ Sistema de múltiples niveles progresivos (10 niveles)
+
+✅ Bloques con diferentes niveles de resistencia
+
+✅ Power-ups (incluyendo modo Sticky)
+
+✅ Sistema de rebote dinámico según punto de impacto
+
+✅ Sonidos de colisión
+
+✅ Pantalla de información (Cómo jugar)
+
+✅ Sistema de Game Over y nivel completado
+
+🕹️ Controles
+Tecla Acción
+A / ← Mover izquierda
+D / → Mover derecha
+ESPACIO Lanzar pelota (modo Sticky)
+🧠 Conceptos de POO Aplicados
+
+El juego está estructurado en clases como:
+
+-Paddle
+
+-Ball
+
+-Block
+
+-Game
+
+-Menu
+
+Cada clase encapsula su comportamiento específico, permitiendo un código organizado, reutilizable y escalable.
