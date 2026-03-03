@@ -10,14 +10,21 @@ class Game:
     def __init__(self):
         bg = pygame.image.load("assets/fondo_juego.png")
         self.background = pygame.transform.scale(bg, (1080, 720))
-
+        self.game_objects = []
         self.paddle = Paddle()
         self.ball = Ball()
 
-        # ===== SISTEMA DE NIVELES =====
+
+
+
+  #////////////////////////// SISTEMA DE NIVELES /////////////////////////////
         self.levels = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10]
         self.level = 0
         self.blocks = create_level(self.levels[self.level])
+
+        self.game_objects = [self.paddle, self.ball]
+        self.game_objects.extend(self.blocks)
+      
 
         self.score = 0
         self.level_start_score = 0
@@ -58,10 +65,14 @@ class Game:
             if power.rect.colliderect(self.paddle.rect):
                 self.activate_power(power.type)
                 self.powerups.remove(power)
+                if power in self.game_objects:
+                    self.game_objects.remove(power)
                 self.power_sound.play()
 
             elif power.rect.top > 720:
                 self.powerups.remove(power)
+                if power in self.game_objects:
+                    self.game_objects.remove(power)
 
         self.update_effects()
     # -----------------------------
@@ -82,12 +93,15 @@ class Game:
                     if random.random() < 0.1:
                         power = PowerUp(block.rect.centerx, block.rect.centery)
                         self.powerups.append(power)
+                        self.game_objects.append(power)
 
         if self.is_level_complete():
             self.finished = True
 
     def restart_level(self):
         self.blocks = create_level(self.levels[self.level])
+        self.game_objects = [self.paddle, self.ball]
+        self.game_objects.extend(self.blocks)
         self.ball.reset()
         self.paddle.rect.centerx = 540
 
@@ -115,6 +129,8 @@ class Game:
 
         if self.level < len(self.levels):
             self.blocks = create_level(self.levels[self.level])
+            self.game_objects = [self.paddle, self.ball]
+            self.game_objects.extend(self.blocks)
             self.powerups.clear()
             self.level_start_score = self.score
         else:
@@ -134,17 +150,12 @@ class Game:
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
 
-        self.paddle.draw(screen)
-        self.ball.draw(screen)
-
-        for block in self.blocks:
-            block.draw(screen)
+        for obj in self.game_objects:
+            obj.draw(screen)
 
         score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
         screen.blit(score_text, (20, 10))
-    
-        for power in self.powerups:
-            power.draw(screen)
+
 
     def activate_power(self, power_type):
         current_time = pygame.time.get_ticks()

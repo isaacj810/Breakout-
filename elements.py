@@ -9,19 +9,29 @@ font_big = pygame.font.Font("assets/StackedStrong-Regular.otf", 72)
 font_medium = pygame.font.Font("assets/StackedStrong-Regular.otf", 40)
 font_small = pygame.font.Font("assets/StackedStrong-Regular.otf", 28)
 
-
-# ============================= PALETA =============================
-class Paddle:
-    def __init__(self):
-        self.image = pygame.image.load("assets/plataforma.png")
-        self.image = pygame.transform.scale(self.image, (180, 30))
-
+# ============================= CLASE BASE =============================
+class GameObject:
+    def __init__(self, image, x, y):
+        self.image = image
         self.rect = self.image.get_rect()
-        self.rect.centerx = 540
-        self.rect.y = 650
+        self.rect.topleft = (x, y)
+
+    def update(self):
+        pass
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
+
+# ============================= PLATAFORMA =============================
+class Paddle(GameObject):
+    def __init__(self):
+        image = pygame.image.load("assets/plataforma.png")
+        image = pygame.transform.scale(image, (180, 30))
+
+        super().__init__(image, 450, 650)
 
         self.speed = 8
-
         self.sticky = False
         self.stuck = False
 
@@ -44,19 +54,20 @@ class Paddle:
         screen.blit(self.image, self.rect)
 
 # ============================= PELOTA =============================
-class Ball:
+class Ball(GameObject):
     def __init__(self):
-        self.image = pygame.image.load("assets/pelota.png")
-        self.image = pygame.transform.scale(self.image, (24, 24))
+        image = pygame.image.load("assets/pelota.png")
+        image = pygame.transform.scale(image, (24, 24))
+
+        super().__init__(image, 540, 500)
 
         self.base_speed_x = 6
         self.base_speed_y = -6
 
+        self.speed_x = self.base_speed_x
+        self.speed_y = self.base_speed_y
 
-        self.rect = self.image.get_rect()
-        self.reset()
         self.damage = 1
-
         self.sticky = False
         self.stuck = False
         
@@ -122,7 +133,7 @@ class Ball:
 BLOCK_WIDTH = 90
 BLOCK_HEIGHT = 36
 
-class Block:
+class Block(GameObject):
     def __init__(self, x, y, color, hits):
         self.hits = hits
         self.alive = True
@@ -135,8 +146,7 @@ class Block:
         self.image_hit = pygame.transform.scale(img2, (BLOCK_WIDTH, BLOCK_HEIGHT))
         self.image_damaged = pygame.transform.scale(img3, (BLOCK_WIDTH, BLOCK_HEIGHT))
 
-        self.image = self.image_normal
-        self.rect = self.image.get_rect(topleft=(x, y))
+        super().__init__(self.image_normal, x, y)
 
     def hit(self, damage):
         self.hits -= damage
@@ -151,7 +161,7 @@ class Block:
 
     def draw(self, screen):
         if self.alive:
-            screen.blit(self.image, self.rect)
+            super().draw(screen)
 
 
 ################################# FUNCION PARA CREAR EL NIVEL ##############################################
@@ -209,14 +219,14 @@ LEVEL_3 = [
 ]
 
 LEVEL_4 = [
-   "....EE....",
-    "A..EEEE..A",
-    "..EEFFEE..",
-    "...LEEL...",
-    "A...EE...A",
-    "...LEEL...",
-    "..EEFFEE..",
-    "A..EEEE..A",
+   "....OO....",
+    "A..OOOO..A",
+    "..OOFFOO..",
+    "...LIIL...",
+    "A...II...A",
+    "...LIIL...",
+    "..OOFFOO..",
+    "A..OOOO..A",
 ]
 
 LEVEL_5 = [

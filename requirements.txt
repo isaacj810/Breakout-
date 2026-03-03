@@ -1,0 +1,2 @@
+arcade-machine-sdk
+pygame>=2.6.0

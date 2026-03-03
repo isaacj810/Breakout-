@@ -1,5 +1,6 @@
 import pygame
 import random
+from elements import GameObject
 
 POWER_TYPES = [
     "x2",
@@ -10,7 +11,7 @@ POWER_TYPES = [
     "sticky"
 ]
 
-class PowerUp:
+class PowerUp(GameObject):
     def __init__(self, x, y):
        
         self.type = random.choice(POWER_TYPES)
