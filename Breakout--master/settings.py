@@ -1,0 +1,10 @@
+from arcade_machine_sdk import BASE_WIDTH, BASE_HEIGHT, DEFAULT_FPS
+
+# Resolución estándar del SDK (1024x768)
+WIDTH  = BASE_WIDTH   # 1024
+HEIGHT = BASE_HEIGHT  # 768
+
+FPS = DEFAULT_FPS  # 60
+
+PADDLE_SPEED = 9
+BALL_SPEED   = 6

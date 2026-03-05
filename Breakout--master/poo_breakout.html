@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pilares de la POO – Breakout</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: #7dd3fc;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #94a3b8;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .sdk-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: 0.85rem;
+      color: #7dd3fc;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 28px;
+      border-left: 5px solid;
+    }
+
+    .card.herencia    { border-color: #34d399; }
+    .card.encapsulam  { border-color: #f59e0b; }
+    .card.abstraccion { border-color: #818cf8; }
+    .card.polimorfism { border-color: #f87171; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .icon { font-size: 2rem; }
+
+    .card h2 { font-size: 1.25rem; }
+
+    .card.herencia    h2 { color: #34d399; }
+    .card.encapsulam  h2 { color: #f59e0b; }
+    .card.abstraccion h2 { color: #818cf8; }
+    .card.polimorfism h2 { color: #f87171; }
+
+    .definition {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .herencia    .badge { background: #064e3b; color: #34d399; }
+    .encapsulam  .badge { background: #451a03; color: #f59e0b; }
+    .abstraccion .badge { background: #1e1b4b; color: #818cf8; }
+    .polimorfism .badge { background: #450a0a; color: #f87171; }
+
+    /* badge especial SDK (siempre azul) */
+    .badge-sdk {
+      background: #0c4a6e;
+      color: #38bdf8;
+    }
+
+    .usage {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .usage li {
+      margin-left: 18px;
+      margin-bottom: 4px;
+    }
+
+    .new-tag {
+      font-size: 0.7rem;
+      background: #16a34a;
+      color: #fff;
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: 4px;
+      vertical-align: middle;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    pre {
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 0.82rem;
+      overflow-x: auto;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    .kw  { color: #93c5fd; }   /* palabras clave */
+    .cls { color: #34d399; }   /* clases */
+    .cls2{ color: #38bdf8; }   /* clases del SDK */
+    .fn  { color: #fbbf24; }   /* funciones */
+    .cm  { color: #64748b; }   /* comentarios */
+    .st  { color: #f87171; }   /* strings */
+
+    /* Sección de arquitectura SDK */
+    .arch-section {
+      max-width: 1100px;
+      margin: 0 auto 36px;
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 28px;
+      border-left: 5px solid #38bdf8;
+    }
+
+    .arch-section h2 {
+      color: #38bdf8;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .arch-section p {
+      color: #94a3b8;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .arch-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .arch-box {
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-family: monospace;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+    }
+
+    .arch-box.sdk { border-color: #38bdf8; color: #38bdf8; }
+    .arch-box.game { border-color: #34d399; color: #34d399; }
+
+    .arch-arrow { color: #475569; font-size: 1.2rem; }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #475569;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎮 Pilares de la POO en Breakout</h1>
+  <p>Proyecto Académico · Isaac Salazar &amp; Pedro Morese · Universidad de Oriente</p>
+  <div class="sdk-banner">
+    🔌 Integrado con <strong>arcade-machine-sdk</strong> v1.1.2
+  </div>
+</header>
+
+<!-- ============ BLOQUE ARQUITECTURA SDK ============ -->
+<div class="arch-section">
+  <h2>🔌 Integración con Arcade Machine SDK</h2>
+  <p>
+    El juego fue refactorizado para funcionar como un <strong>módulo independiente</strong> dentro del
+    proyecto académico Arcade Machine. El SDK implementa una arquitectura de <strong>loop único centralizado</strong>:
+    el Core del sistema gestiona la ventana, el bucle principal y las llamadas por frame.
+    El módulo Breakout actúa como un "invitado" que solo implementa los métodos de la interfaz.
+  </p>
+  <div class="arch-flow">
+    <div class="arch-box sdk">Core (SDK)</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">handle_events(events)</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">update(dt)</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">render()</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box sdk">pygame.display.flip()</div>
+  </div>
+  <br/>
+  <p style="font-size:0.85rem; color:#64748b;">
+    ⚠️ El módulo <strong>nunca</strong> llama a <code>pygame.display.set_mode()</code>,
+    <code>pygame.display.flip()</code>, <code>pygame.event.get()</code> ni crea su propio <code>while</code>.
+    Todas las rutas de assets usan <code>pathlib.Path</code> (sin rutas absolutas). Resolución estándar: <strong>1024 × 768</strong>.
+  </p>
+</div>
+
+<div class="grid">
+
+  <!-- ============ HERENCIA ============ -->
+  <div class="card herencia">
+    <div class="card-header">
+      <span class="icon">🧬</span>
+      <h2>Herencia</h2>
+    </div>
+    <p class="definition">
+      Permite que una clase <strong>hija</strong> reutilice atributos y métodos de una clase <strong>padre</strong>,
+      evitando repetición de código. Con la integración del SDK se añadió un segundo nivel de herencia.
+    </p>
+    <div class="badge-row">
+      <span class="badge">elements.py &amp; powers.py</span>
+      <span class="badge badge-sdk">main.py ← SDK</span>
+    </div>
+    <ul class="usage">
+      <li><code>Paddle</code>, <code>Ball</code> y <code>Block</code> heredan de <code>GameObject</code>.</li>
+      <li><code>PowerUp</code> también hereda de <code>GameObject</code>.</li>
+      <li><code>BreakoutGame</code> hereda de <code>GameBase</code> (clase del SDK) <span class="new-tag">nuevo</span></li>
+      <li>Al llamar <code>super().start(surface)</code> y <code>super().stop()</code>, se reutiliza el ciclo de vida del SDK sin duplicar código.</li>
+    </ul>
+    <pre><span class="cm"># Nivel 1 — jerarquía interna del juego</span>
+<span class="kw">class</span> <span class="cls">GameObject</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, image, x, y): ...
+
+<span class="kw">class</span> <span class="cls">Paddle</span>(<span class="cls">GameObject</span>): ...
+<span class="kw">class</span> <span class="cls">Ball</span>(<span class="cls">GameObject</span>):   ...
+<span class="kw">class</span> <span class="cls">Block</span>(<span class="cls">GameObject</span>):  ...
+<span class="kw">class</span> <span class="cls">PowerUp</span>(<span class="cls">GameObject</span>): ...
+
+<span class="cm"># Nivel 2 — integración con arcade-machine-sdk</span>
+<span class="kw">from</span> arcade_machine_sdk <span class="kw">import</span> <span class="cls2">GameBase</span>, <span class="cls2">GameMeta</span>
+
+<span class="kw">class</span> <span class="cls">BreakoutGame</span>(<span class="cls2">GameBase</span>):
+    <span class="kw">def</span> <span class="fn">start</span>(self, surface):
+        <span class="kw">super</span>().<span class="fn">start</span>(surface)  <span class="cm"># hereda ciclo de vida del SDK</span>
+        ...</pre>
+  </div>
+
+  <!-- ============ ENCAPSULAMIENTO ============ -->
+  <div class="card encapsulam">
+    <div class="card-header">
+      <span class="icon">🔒</span>
+      <h2>Encapsulamiento</h2>
+    </div>
+    <p class="definition">
+      Cada clase <strong>oculta su estado interno</strong> y expone solo los métodos necesarios.
+      Con el SDK, <code>BreakoutGame</code> agrupa y oculta todo el estado del juego detrás de atributos privados.
+    </p>
+    <div class="badge-row">
+      <span class="badge">elements.py &amp; game.py</span>
+      <span class="badge badge-sdk">main.py — BreakoutGame</span>
+    </div>
+    <ul class="usage">
+      <li><code>Ball</code> controla <code>speed_x</code> / <code>speed_y</code> internamente en <code>move()</code>.</li>
+      <li><code>Block</code> gestiona su propio ciclo de vida en <code>hit()</code>.</li>
+      <li><code>BreakoutGame</code> encapsula el estado completo: <code>_game_state</code>, <code>_menu</code>, <code>_game</code>, <code>_transitioning</code>, etc. <span class="new-tag">nuevo</span></li>
+      <li>El SDK solo puede llamar a <code>handle_events</code>, <code>update</code> y <code>render</code>; no accede al estado interno del juego.</li>
+    </ul>
+    <pre><span class="kw">class</span> <span class="cls">BreakoutGame</span>(<span class="cls2">GameBase</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, meta):
+        <span class="kw">super</span>().__init__(meta)
+        <span class="cm"># atributos privados — solo accesibles internamente</span>
+        self._game_state    = <span class="st">"menu"</span>
+        self._menu          = None
+        self._game          = None
+        self._transitioning = False
+        self._fade_alpha    = 0
+
+    <span class="cm"># El SDK solo conoce esta interfaz pública:</span>
+    <span class="kw">def</span> <span class="fn">handle_events</span>(self, events): ...
+    <span class="kw">def</span> <span class="fn">update</span>(self, dt):        ...
+    <span class="kw">def</span> <span class="fn">render</span>(self):            ...</pre>
+  </div>
+
+  <!-- ============ ABSTRACCION ============ -->
+  <div class="card abstraccion">
+    <div class="card-header">
+      <span class="icon">🎨</span>
+      <h2>Abstracción</h2>
+    </div>
+    <p class="definition">
+      Se modela solo lo <strong>esencial</strong>, ignorando detalles. Con el SDK se añade una
+      abstracción de nivel superior: <code>GameBase</code> es una clase <strong>abstracta real</strong>
+      (<code>ABC</code>) que define el contrato que todo juego debe cumplir.
+    </p>
+    <div class="badge-row">
+      <span class="badge">elements.py</span>
+      <span class="badge badge-sdk">arcade_machine_sdk — GameBase</span>
+    </div>
+    <ul class="usage">
+      <li><code>GameObject</code> define la idea general de "cualquier cosa del juego": imagen, posición y dibujo.</li>
+      <li><code>GameBase</code> (SDK) define la idea general de "cualquier juego arcade": debe poder procesar eventos, actualizarse y dibujarse. <span class="new-tag">nuevo</span></li>
+      <li><code>GameMeta</code> abstrae los metadatos del juego (título, autores, tags) con un patrón Builder. <span class="new-tag">nuevo</span></li>
+      <li><code>draw_overlay()</code> y <code>create_level()</code> abstraen lógica compleja en funciones simples.</li>
+    </ul>
+    <pre><span class="cm"># ABC del SDK — contrato abstracto para cualquier juego</span>
+<span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="kw">class</span> <span class="cls2">GameBase</span>(ABC):
+    <span class="kw">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">handle_events</span>(self, events): <span class="kw">pass</span>
+    <span class="kw">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">update</span>(self, dt):        <span class="kw">pass</span>
+    <span class="kw">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">render</span>(self):            <span class="kw">pass</span>
+
+<span class="cm"># Builder Pattern — abstrae la construcción de metadatos</span>
+metadata = (<span class="cls2">GameMeta</span>()
+    .with_title(<span class="st">"Breakout"</span>)
+    .with_description(<span class="st">"Juego clásico arcade"</span>)
+    .with_release_date(<span class="st">"04/03/2026"</span>)
+    .with_group_number(1)
+    .add_author(<span class="st">"Equipo Breakout"</span>))</pre>
+  </div>
+
+  <!-- ============ POLIMORFISMO ============ -->
+  <div class="card polimorfism">
+    <div class="card-header">
+      <span class="icon">🔄</span>
+      <h2>Polimorfismo</h2>
+    </div>
+    <p class="definition">
+      El <strong>mismo método</strong> se comporta de forma diferente según el objeto que lo llame.
+      Con el SDK, <code>BreakoutGame</code> sobreescribe los métodos abstractos de <code>GameBase</code>
+      con la lógica específica del Breakout.
+    </p>
+    <div class="badge-row">
+      <span class="badge">elements.py &amp; powers.py</span>
+      <span class="badge badge-sdk">main.py — métodos del SDK</span>
+    </div>
+    <ul class="usage">
+      <li><code>draw()</code> está sobreescrito en <code>Paddle</code>, <code>Ball</code>, <code>Block</code> y <code>PowerUp</code> — cada uno lo ejecuta a su manera.</li>
+      <li><code>Block.draw()</code> solo dibuja si <code>self.alive == True</code>; los demás siempre se dibujan.</li>
+      <li><code>BreakoutGame.update(dt)</code> sobreescribe <code>GameBase.update()</code>: maneja estados del juego, físicas y transiciones. <span class="new-tag">nuevo</span></li>
+      <li><code>BreakoutGame.render()</code> sobreescribe <code>GameBase.render()</code>: dibuja el frame según el estado actual del juego. <span class="new-tag">nuevo</span></li>
+    </ul>
+    <pre><span class="cm"># Polimorfismo 1 — draw() en los objetos del juego</span>
+<span class="kw">class</span> <span class="cls">Block</span>(<span class="cls">GameObject</span>):
+    <span class="kw">def</span> <span class="fn">draw</span>(self, screen):
+        <span class="kw">if</span> self.alive: <span class="kw">super</span>().<span class="fn">draw</span>(screen)
+
+<span class="kw">class</span> <span class="cls">PowerUp</span>(<span class="cls">GameObject</span>):
+    <span class="kw">def</span> <span class="fn">update</span>(self):
+        self.rect.y += self.speed  <span class="cm"># cae hacia abajo</span>
+
+<span class="cm"># Polimorfismo 2 — métodos abstractos del SDK</span>
+<span class="kw">class</span> <span class="cls">BreakoutGame</span>(<span class="cls2">GameBase</span>):
+    <span class="kw">def</span> <span class="fn">render</span>(self):          <span class="cm"># sobreescribe GameBase.render()</span>
+        surface = self.surface  <span class="cm"># surface gestionada por el SDK</span>
+        <span class="kw">if</span> self._game_state == <span class="st">"menu"</span>:
+            self._menu.<span class="fn">draw</span>(surface)
+        <span class="kw">elif</span> self._game_state == <span class="st">"game"</span>:
+            self._game.<span class="fn">draw</span>(surface)</pre>
+  </div>
+
+</div>
+
+<footer>
+  <p>🎓 Universidad de Oriente · Taller de Objetos y Abstracción de Datos · 2026</p>
+</footer>
+
+</body>
+</html>
