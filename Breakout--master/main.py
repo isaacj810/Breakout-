@@ -1,9 +1,4 @@
-"""
-Breakout - Módulo para Arcade Machine SDK
-==========================================
-Integra el juego Breakout como un módulo compatible con arcade-machine-sdk.
-La clase BreakoutGame implementa la interfaz GameBase del SDK.
-"""
+
 
 import pygame
 from pathlib import Path
@@ -26,11 +21,11 @@ metadata = (
     GameMeta()
     .with_title("Breakout")
     .with_description("Juego clásico de Breakout con 10 niveles, poderes y efectos especiales.")
-    .with_release_date("04/03/2026")
-    .with_group_number(1)
+    .with_release_date("27/02/2026")
+    .with_group_number(7)
     .add_tag("Arcade")
     .add_tag("Clásico")
-    .add_author("Equipo Breakout")
+    .add_author("Isaac Salazar y Pedro Morese")
 )
 
 
@@ -38,16 +33,6 @@ metadata = (
 # Clase principal del módulo
 # ──────────────────────────────────────────────────────────────────────────────
 class BreakoutGame(GameBase):
-    """
-    Módulo Breakout para Arcade Machine SDK.
-
-    Estados del juego:
-        menu          → Pantalla principal
-        info          → Pantalla de información / instrucciones
-        game          → Juego en curso
-        level_complete → Nivel completado
-        game_over     → Partida perdida
-    """
 
     def __init__(self, meta: GameMeta):
         super().__init__(meta)
